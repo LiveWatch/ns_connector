@@ -59,7 +59,7 @@ function get_record_by_id(type_id, fields, id)
 // 	target_type_id:: target record type, e.g. customerpayment
 // 	data:: hash of key/values to set before saving the new deferred record
 // 	fields:: array of fields for target type
-function transform(request) 
+function transform(request)
 {
 	var deferred = nlapiTransformRecord(
 		request.source_type_id,
@@ -304,7 +304,7 @@ function create(request)
 }
 
 // Given a record, sublist_id and array of fields, retrieve the whole sublist
-// as an array of hashes 
+// as an array of hashes
 function get_sublist(record, sublist_id, fields)
 {
 	var len = record.getLineItemCount(request.sublist_id);
@@ -433,7 +433,7 @@ function get_sublist_changes(request)
 // Each change item is an object that can contain the following keys:
 //  * downstream_index: The index of the sublist item in the changes that we
 //                      are pushing up. You'll only see this on add and update
-//  
+//
 function update_sublist(request)
 {
 	var changes = get_sublist_changes(request);
@@ -632,10 +632,13 @@ function main(request)
 		argument_error("Unknown action: " + request.action);
 	}
 
+  if (request.restlet_debug) {
+    nlapiLogExecution('DEBUG', 'request', JSON.stringify(request));
+  }
+
   var restlet_response = actions[request.action](request)
 
   if (request.restlet_debug) {
-    nlapiLogExecution('DEBUG', 'request', JSON.stringify(request));
     nlapiLogExecution('DEBUG', 'response', JSON.stringify(restlet_response));
   }
 
